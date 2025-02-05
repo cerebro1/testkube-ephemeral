@@ -27,9 +27,12 @@ jobs:
           POD_NAME=$(kubectl get pods -n testkube | grep testkube-api-server | awk '{print $1}')
           kubectl wait --for=condition=Ready pod/$POD_NAME -n testkube --timeout=150s
 
-      - name: Run Testkube Test Workflow
+      - name: Setup Testkube
         uses: kubeshop/setup-testkube@v1
-      
-      - run: |
+        with:
+          version: 2.1.54
+
+      - name: Create and run Test Workflow
+        run: |
           testkube create testworkflow -f testworkflow.yaml   
           testkube run tw ephemeral-test --watch
