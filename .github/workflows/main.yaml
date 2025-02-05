@@ -19,16 +19,7 @@ jobs:
       - name: Configure Testkube Agent
         run: |
           helm repo update
-          helm upgrade --install --reuse-values --create-namespace testkube \
-            kubeshop/testkube \
-            --set testkube-api.cloud.key=${{ secrets.TESTKUBE_API_AGENT }} \
-            --set testkube-api.cloud.orgId=${{ secrets.TESTKUBE_ORG_ID }} \
-            --set testkube-api.cloud.envId=${{ secrets.TESTKUBE_ENV_ID }} \
-            --set testkube-api.minio.enabled=false \
-            --set mongodb.enabled=false \
-            --set testkube-dashboard.enabled=false \
-            --set testkube-api.cloud.url=agent.testkube.io:443 \
-            --namespace testkube
+          helm upgrade --install --create-namespace --namespace testkube testkube kubeshop/testkube
 
       - name: Check Testkube Version and Pods Status
         run: |
@@ -38,11 +29,7 @@ jobs:
 
       - name: Run Testkube Test Workflow
         uses: kubeshop/setup-testkube@v1
-        with:
-          organization: ${{ secrets.TESTKUBE_ORG_ID }}
-          environment: ${{ secrets.TESTKUBE_ENV_ID }}
-          token: ${{ secrets.TESTKUBE_API_TOKEN }}
-
+      
       - run: |
           testkube create testworkflow -f testworkflow.yaml   
           testkube run tw ephemeral-test --watch
