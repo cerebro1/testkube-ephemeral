@@ -44,5 +44,5 @@ jobs:
           token: ${{ secrets.TESTKUBE_API_TOKEN }}
 
       - run: |
-          testkube create testworkflow -f test-workflow.yaml   
+          testkube create testworkflow -f testworkflow.yaml   
           testkube run tw ephemeral-test --watch
