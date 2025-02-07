@@ -28,7 +28,7 @@ jobs:
           kubectl wait --for=condition=Ready pod/$POD_NAME -n testkube --timeout=150s
 
       - name: Setup Testkube
-        uses: kubeshop/setup-testkube@v1.0.9
+        uses: kubeshop/setup-testkube@v1.0.10
 
       - name: Create and run Test Workflow
         run: |
