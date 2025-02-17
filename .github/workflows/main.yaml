@@ -24,7 +24,11 @@ jobs:
       - name: Check Testkube Version and Pods Status
         run: |
           kubectl get pods -n testkube -o wide
-          POD_NAME=$(kubectl get pods -n testkube | grep testkube-api-server | awk '{print $1}')
+          TESTKUBE_POD_NAME=$(kubectl get pods -n testkube | grep testkube-api-server | awk '{print $1}')
+          kubectl wait --for=condition=Ready pod/$POD_NAME -n testkube --timeout=150s
+          MINIO_POD_NAME=$(kubectl get pods -n testkube | grep testkube-minio | awk '{print $1}')
+          kubectl wait --for=condition=Ready pod/$POD_NAME -n testkube --timeout=150s
+          MONGO_POD_NAME=$(kubectl get pods -n testkube | grep testkube-mongodb | awk '{print $1}')
           kubectl wait --for=condition=Ready pod/$POD_NAME -n testkube --timeout=150s
 
       - name: Setup Testkube
