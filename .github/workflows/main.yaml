@@ -25,7 +25,7 @@ jobs:
         run: |
           kubectl get pods -n testkube -o wide
           TESTKUBE_POD_NAME=$(kubectl get pods -n testkube | grep testkube-api-server | awk '{print $1}')
-          kubectl wait --for=condition=Ready pod/$TESTKUBE_POD_NAME-n testkube --timeout=150s
+          kubectl wait --for=condition=Ready pod/$TESTKUBE_POD_NAME -n testkube --timeout=150s
           MINIO_POD_NAME=$(kubectl get pods -n testkube | grep testkube-minio | awk '{print $1}')
           kubectl wait --for=condition=Ready pod/$MINIO_POD_NAME -n testkube --timeout=150s
           MONGO_POD_NAME=$(kubectl get pods -n testkube | grep testkube-mongodb | awk '{print $1}')
